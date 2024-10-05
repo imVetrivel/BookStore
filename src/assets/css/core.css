@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.font-1 {
+    font-family: "Josefin Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+.font-2 {
+    font-family: "Poiret One", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.font-3 {
+    font-family: "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+}
+
+.font-4 {
+    font-family: "Afacad Flux", sans-serif;
+    font-optical-sizing: auto;
+}
+
+.font-5 {
+    font-family: "Rubik Doodle Shadow", system-ui;
+    font-weight: 400;
+    font-style: normal;
+
+}

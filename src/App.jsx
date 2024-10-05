@@ -3,6 +3,7 @@ import './assets/css/core.css';
 import Navbar from './Components/Navbar';
 import Layout from './Components/Layout';
 import Cart from './Components/Cart';
+import Home from './Components/Home'
 
 function App() {
    const [cart, setCart] = useState([]);
@@ -56,14 +57,15 @@ function App() {
    // Function to handle adding items to the cart
    function handleCart(book) {
       setCart(prevCart => [...prevCart, book]); 
-      setAddedBooks(prevAddedBooks => [...prevAddedBooks, book.name]);
+      setAddedBooks(prevAddedBooks => [...prevAddedBooks, book.name]); // Track added book
    }
 
    return (
       <>
          <Navbar />
-         <div className='flex flex-col items-center mb-32 w-full'>
-            <h1 className='text-center text-2xl mb-8'>Book's Store</h1>
+         <Home />
+         {/* <div className='flex flex-col items-center mb-32 w-full bg-slate-950  '>
+            <h1 className='text-center text-2xl mb-8 text-white'>Book's Store</h1>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mx-4 md:mx-10 lg:mx-20'>
                {Books.map((book, index) => (
                   <div className='flex float-start flex-col' key={index}>
@@ -81,7 +83,7 @@ function App() {
                ))}
             </div>
          </div>
-         <Cart cartItems={cart} />
+         <Cart cartItems={cart} /> */}
       </>
    );
 }
