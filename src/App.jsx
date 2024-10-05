@@ -2,10 +2,12 @@ import { useState } from 'react';
 import './assets/css/core.css';
 import Navbar from './Components/Navbar';
 import Layout from './Components/Layout';
-import Cart from './Components/Cart'; // Import Cart component
+import Cart from './Components/Cart';
 
 function App() {
-   const [cart, setCart] = useState([]); // Ensure cart is initialized as an empty array
+   const [cart, setCart] = useState([]);
+   const [addedBooks, setAddedBooks] = useState([]); 
+
    const Books = [
       {
          name: 'Harry Potter',
@@ -53,7 +55,8 @@ function App() {
 
    // Function to handle adding items to the cart
    function handleCart(book) {
-      setCart(prevCart => [...prevCart, book]); // Use functional update for state
+      setCart(prevCart => [...prevCart, book]); 
+      setAddedBooks(prevAddedBooks => [...prevAddedBooks, book.name]);
    }
 
    return (
@@ -66,13 +69,19 @@ function App() {
                   <div className='flex float-start flex-col' key={index}>
                      <Layout Books={[book]} />
                      <div className='mx-3 mt-1'>
-                        <button className='bg-green-300 w-24 p-1' onClick={() => handleCart(book)}>Add to cart</button>
+                        <button 
+                           className={`bg-blue-400 w-24 p-1 ${addedBooks.includes(book.name) ? 'bg-green-400' : ''}`} 
+                           disabled={addedBooks.includes(book.name)} 
+                           onClick={() => handleCart(book)}
+                        >
+                           {addedBooks.includes(book.name) ? 'Added!' : 'Add to cart'}
+                        </button>
                      </div>
                   </div>
                ))}
             </div>
          </div>
-         <Cart cartItems={cart} /> {/* Render Cart component with cart items */}
+         <Cart cartItems={cart} />
       </>
    );
 }
