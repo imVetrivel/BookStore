@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = ({onSearch}) => {
+const Navbar = ({onSearch,onCategory}) => {
 
   const[search,setSearch]=useState("");
+  const[category,setCategory]=useState("");
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+    onCategory(e.target.value);
+  };
 
   const navigate=useNavigate();
-
+  // console.log(category);
   return (
     <nav className="bg-slate-800 text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
@@ -31,12 +37,25 @@ const Navbar = ({onSearch}) => {
           
           <nav>
             <ul className="flex space-x-6 text-sm font-medium">
-              <li className="hover:text-blue-400 transition" onClick={()=>navigate('/')}>Home</li>
-              <li><a href="#" className="hover:text-blue-400 transition">Categories</a></li>
-              <li className="hover:text-blue-400 transition" onClick={()=>navigate('/cart')}>Checkout</li>
+              <li className="hover:text-blue-400 transition" onClick={() => navigate('/')}>Home</li>
+              <li className="relative">
+                <select
+                    value={category} 
+                    onChange={handleCategoryChange}
+                    className="bg-transparent border-b border-blue-300 text-sm font-medium hover:text-blue-400 transition focus:outline-none focus:ring-0">
+                    <option className="bg-slate-800 text-white p-4" value="">Categories</option>
+                    <option className="bg-slate-800 text-white p-4" value="Contemporary Fiction">Contemporary Fiction</option>
+                    <option className="bg-slate-800 text-white p-4" value="Classic Literature">Classic Literature</option>
+                    <option className="bg-slate-800 text-white p-4" value="Mystery/Thriller">Mystery/Thriller</option>
+                    <option className="bg-slate-800 text-white p-4" value="Science Fiction/Fantasy">Science Fiction/Fantasy</option>
+                    <option className="bg-slate-800 text-white p-4" value="Non-fiction">Non-fiction</option>
+                </select>
+              </li>
+              <li className="hover:text-blue-400 transition" onClick={() => navigate('/cart')}>Checkout</li>
               <li><a href="#" className="hover:text-blue-400 transition">Login</a></li>
             </ul>
           </nav>
+
         </div>
       </div>
     </nav>
