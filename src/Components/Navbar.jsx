@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({onSearch}) => {
+
   const[search,setSearch]=useState("");
+
+  const navigate=useNavigate();
+
   return (
     <nav className="bg-slate-800 text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
@@ -26,9 +31,9 @@ const Navbar = ({onSearch}) => {
           
           <nav>
             <ul className="flex space-x-6 text-sm font-medium">
-              <li><a href="#" className="hover:text-blue-400 transition">Home</a></li>
+              <li className="hover:text-blue-400 transition" onClick={()=>navigate('/')}>Home</li>
               <li><a href="#" className="hover:text-blue-400 transition">Categories</a></li>
-              <li><a href="#" className="hover:text-blue-400 transition">Checkout</a></li>
+              <li className="hover:text-blue-400 transition" onClick={()=>navigate('/cart')}>Checkout</li>
               <li><a href="#" className="hover:text-blue-400 transition">Login</a></li>
             </ul>
           </nav>

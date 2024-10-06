@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { bookCollection } from './BookCollections';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const ProductCard = ({ title, description, price, imageUrl ,handleCart}) => {
+const ProductCard = ({ title, description, price, imageUrl, handleCart }) => {
+  const [isAdded, setIsAdded] = useState(false);
 
-  // const[cart,setCart]=useState([]);
+  const handleAddToCart = () => {
+    handleCart({ title, description, price, imageUrl });
+    setIsAdded(true); // Mark as added
+  };
 
-  // function handleCart(){
-  //   setCart([...cart,{ title, description, price, imageUrl }]);
-  //   console.log(cart);
-  // }
-  return(
+  return (
     <div className="bg-white rounded-lg overflow-hidden shadow-lg ring-4 ring-slate-600-500 ring-opacity-40 max-w-xs mx-auto flex flex-col justify-between">
       <div className="relative">
         <img className="w-full h-64 object-cover" src={imageUrl} alt={title} />
@@ -24,16 +24,17 @@ const ProductCard = ({ title, description, price, imageUrl ,handleCart}) => {
       </div>
       <div className="p-4 flex items-center justify-between mt-auto">
         <span className="font-bold text-lg">₹{price}</span>
-        <button 
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 p-1 text-sm rounded font-1"
-          onClick={() => handleCart({ title, description, price, imageUrl })}
+        <button
+          className={`font-bold py-1 px-2 p-1 text-sm rounded font-1 ${isAdded ? 'bg-green-500' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
+          onClick={handleAddToCart}
+          disabled={isAdded}
         >
-          Add to cart
+          {isAdded ? 'Added' : 'Add to Cart'}
         </button>
       </div>
     </div>
-)};
-
+  );
+};
 const GenreSection = ({ genre, books, search,handleCart }) => {
   const [startIndex, setStartIndex] = React.useState(0);
 
