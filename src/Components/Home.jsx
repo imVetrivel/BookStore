@@ -193,19 +193,31 @@ const GenreSection = ({ genre, books, search, handleCart }) => {
 };
 
 // Home component to display all books or filtered genres with search functionality
-const Home = ({ search, handleCart }) => {
+const Home = ({ search, handleCart,category }) => {
   const allBooks = [];
+
+  console.log(category);
 
   Object.values(bookCollection).forEach((genreBooks) => {
     allBooks.push(...genreBooks);
   });
 
-  const matchedGenres = Object.entries(bookCollection).filter(([genre, books]) =>
+  let matchedGenres=[];
+  
+  if(category){
+    matchedGenres = Object.entries(bookCollection).filter(([genre, books]) =>
     books.some((book) =>
+      genre.toLowerCase().includes(category.toLowerCase()) &&
       book.title.toLowerCase().includes(search.toLowerCase())
-    )
-  );
-
+    ));
+  }else{
+    matchedGenres = Object.entries(bookCollection).filter(([genre, books]) =>
+      books.some((book) =>
+        book.title.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }
+  
   return (
     <div>
       <div className="container mx-auto px-4 py-8">
