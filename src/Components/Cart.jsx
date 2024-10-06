@@ -1,28 +1,28 @@
 import React from 'react';
 
-function Cart({ cartItems = [] }) {
-  return (
-    <div className='cart mx-36'>
-      <h2 className='text-xl mb-4'>Shopping Cart</h2>
-      {cartItems.length === 0 ? (
-        <p>Your cart is empty</p>
-      ) : (
-        <div className='flex flex-row gap-5'>
-          {cartItems.map((data, index) => (
-            <div key={index} className='mt-2'>
-              <img 
-                src={data.photo}  
-                alt={data.name} 
-                className='rounded-md h-32 w-32 object-cover'
-              />
-              <li>{data.title}</li>
-              <li>{`Price: $${data.price}`}</li>     
-            </div>
-          ))}
+const Cart = ({ books }) => {
+    return (
+        <div className="p-6 bg-white shadow-md rounded-lg mt-6">
+            <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
+            {books.length === 0 ? (
+                <p className="text-gray-600">Your cart is empty.</p>
+            ) : (
+                <ul>
+                    {books.map((book, index) => (
+                        <li key={index} className="flex items-start border-b py-4">
+                            <img src={book.imageUrl} alt={book.title} className="w-24 h-36 object-cover rounded-md mr-4" />
+                            <div className="flex-grow">
+                                <h3 className="text-lg font-semibold">{book.title}</h3>
+                                <p className="text-gray-700">Author: {book.author}</p>
+                                <p className="text-gray-600">Description: {book.description}</p>
+                                <p className="text-lg font-bold">Price: ₹{book.price}</p>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
-      )}
-    </div>
-  );
-}
+    );
+};
 
 export default Cart;

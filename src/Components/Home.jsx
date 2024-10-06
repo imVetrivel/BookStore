@@ -1,29 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { bookCollection } from './BookCollections';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const ProductCard = ({ title, description, price, imageUrl }) => (
-  <div className="bg-white rounded-lg overflow-hidden shadow-lg ring-4 ring-slate-600-500 ring-opacity-40 max-w-xs mx-auto flex flex-col justify-between">
-    <div className="relative">
-      <img className="w-full h-64 object-cover" src={imageUrl} alt={title} />
-      <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 m-2 rounded-md text-xs font-medium">
-        SALE
+const ProductCard = ({ title, description, price, imageUrl ,handleCart}) => {
+
+  // const[cart,setCart]=useState([]);
+
+  // function handleCart(){
+  //   setCart([...cart,{ title, description, price, imageUrl }]);
+  //   console.log(cart);
+  // }
+  return(
+    <div className="bg-white rounded-lg overflow-hidden shadow-lg ring-4 ring-slate-600-500 ring-opacity-40 max-w-xs mx-auto flex flex-col justify-between">
+      <div className="relative">
+        <img className="w-full h-64 object-cover" src={imageUrl} alt={title} />
+        <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 m-2 rounded-md text-xs font-medium">
+          SALE
+        </div>
+      </div>
+      <div className="p-4 flex-grow">
+        <h3 className="text-lg font-medium mb-2 font-1">{title}</h3>
+        <p className="text-gray-600 text-sm mb-4 font-3">{description}</p>
+      </div>
+      <div className="p-4 flex items-center justify-between mt-auto">
+        <span className="font-bold text-lg">₹{price}</span>
+        <button 
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 p-1 text-sm rounded font-1"
+          onClick={() => handleCart({ title, description, price, imageUrl })}
+        >
+          Add to cart
+        </button>
       </div>
     </div>
-    <div className="p-4 flex-grow">
-      <h3 className="text-lg font-medium mb-2 font-1">{title}</h3>
-      <p className="text-gray-600 text-sm mb-4 font-3">{description}</p>
-    </div>
-    <div className="p-4 flex items-center justify-between mt-auto">
-      <span className="font-bold text-lg">₹{price}</span>
-      <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 p-1 text-sm rounded font-1">
-        Add to cart
-      </button>
-    </div>
-  </div>
-);
+)};
 
-const GenreSection = ({ genre, books, search }) => {
+const GenreSection = ({ genre, books, search,handleCart }) => {
   const [startIndex, setStartIndex] = React.useState(0);
 
   const handlePrev = () => {
@@ -37,7 +48,12 @@ const GenreSection = ({ genre, books, search }) => {
   const filteredBooks = books.filter((book) =>
     book.title.toLowerCase().includes(search.toLowerCase())
   );
-  console.log(filteredBooks.length);
+
+ 
+  if (filteredBooks.length === 0 && search) {
+    return null;
+  }
+
   return (
     <div className="mb-12">
       <h1 className="text-3xl font-bold mb-6 font-4">{genre}</h1>
@@ -50,13 +66,14 @@ const GenreSection = ({ genre, books, search }) => {
           <ChevronLeft size={24} />
         </button>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 px-4">
-          {(filteredBooks.length>0 ? filteredBooks : books).slice(startIndex, startIndex + 5).map((book, index) => (
+          {filteredBooks.slice(startIndex, startIndex + 5).map((book, index) => (
             <ProductCard
               key={index}
               title={book.title}
               description={book.description}
               price={book.price}
               imageUrl={book.imageUrl}
+              handleCart={handleCart} 
             />
           ))}
         </div>
@@ -72,13 +89,42 @@ const GenreSection = ({ genre, books, search }) => {
   );
 };
 
-const Home = ({ search }) => {
-  console.log(search);
+const Home = ({ search ,handleCart}) => {
+  const allBooks = [];
+
+  Object.values(bookCollection).forEach((genreBooks) => {
+    allBooks.push(...genreBooks);
+  });
+
+  const matchedGenres = Object.entries(bookCollection).filter(([genre, books]) =>
+    books.some((book) =>
+      book.title.toLowerCase().includes(search.toLowerCase())
+    )
+  );
+
   return (
     <div className="container mx-auto px-4 py-8">
-      {Object.entries(bookCollection).map(([genre, books]) => (
-        <GenreSection key={genre} genre={genre} books={books} search={search} />
-      ))}
+      {matchedGenres.length > 0 ? (
+        matchedGenres.map(([genre, books]) => (
+          <GenreSection key={genre} genre={genre} books={books} search={search} handleCart={handleCart}/>
+        ))
+      ) : ( 
+        <div className="mb-12">
+          <h1 className="text-3xl font-bold mb-6 font-4">All Books</h1>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 px-4">
+            {allBooks.slice(0, 20).map((book, index) => (
+              <ProductCard
+                key={index}
+                title={book.title}
+                description={book.description}
+                price={book.price}
+                imageUrl={book.imageUrl}
+                handleCart={handleCart}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
