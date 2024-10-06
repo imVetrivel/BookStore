@@ -10,10 +10,18 @@ function App() {
 
    const[search,setSearch]=useState("");
    const[cart,setCart]=useState([]);
+   const[category,setCategory]=useState("");
+
    function handleSearch(value){
       setSearch(value);
    }
 
+   function handleCategory(value){
+      setCategory(value);
+   }
+
+   // console.log(category)
+   
    const handleCart = (product) => {
       setCart([...cart, product]);
     };
@@ -24,12 +32,12 @@ function App() {
 
    return (
       <>
-         <Navbar onSearch={handleSearch} books={cart}/>
+         <Navbar onSearch={handleSearch} onCategory={handleCategory}/>
          <Routes>
             {/* <Navbar onSearch={handleSearch} books={cart}/>
             <Home cart={cart} handleCart={handleCart} search={search}/>
             <Cart books={cart}/> */}
-            <Route path="/" element={<Home cart={cart} handleCart={handleCart} search={search}/>} />
+            <Route path="/" element={<Home cart={cart} handleCart={handleCart} search={search} category={category} />} />
             <Route path="/cart" element={<Cart books={cart}/>} />
          </Routes>
       </>
