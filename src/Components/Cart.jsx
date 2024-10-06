@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-function Cart({ cartItems = [] }) { 
+function Cart({ cartItems = [] }) {
   return (
     <div className='cart mx-36'>
       <h2 className='text-xl mb-4'>Shopping Cart</h2>
@@ -16,7 +15,7 @@ function Cart({ cartItems = [] }) {
                 alt={data.name} 
                 className='rounded-md h-32 w-32 object-cover'
               />
-              <li>{data.author}</li>
+              <li>{data.title}</li>
               <li>{`Price: $${data.price}`}</li>     
             </div>
           ))}
