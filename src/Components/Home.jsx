@@ -7,7 +7,7 @@ const ProductCard = ({ title, description, price, imageUrl }) => (
   <div className="bg-white rounded-lg overflow-hidden shadow-lg ring-4 ring-slate-600-500 ring-opacity-40 max-w-xs mx-auto flex flex-col justify-between">
     <div className="relative">
       <img className="w-full h-64 object-cover" src={imageUrl}  />
-      <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 m-2 rounded-md text-sm font-medium">
+      <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 m-2 rounded-md text-xs font-medium">
         SALE
       </div>
     </div>
@@ -16,7 +16,7 @@ const ProductCard = ({ title, description, price, imageUrl }) => (
       <p className="text-gray-600 text-sm mb-4 font-3">{description}</p>
     </div>
     <div className="p-4 flex items-center justify-between mt-auto">
-      <span className="font-bold text-lg">${price}</span>
+      <span className="font-bold text-lg">₹{price}</span>
       <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 p-1 text-sm rounded font-1">
         Add to cart
       </button>
