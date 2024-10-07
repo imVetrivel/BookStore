@@ -16,23 +16,25 @@ const Signin = () => {
 		setLoading(true);
 		setError('');
 		setSuccess('');
-
+	
 		try {
-			const result = await axios.post('http://localhost:5000/user/sigin', { email, password });
-			setSuccess('Registration successful!');
+			const result = await axios.post('http://localhost:5000/user/signin', { email, password });
+			
+			// Update the success message to reflect a successful login
+			setSuccess('Login successful!'); 
 			console.log(result);
 		} catch (err) {
+			// Check for a specific error message from the server response
 			if (err.response && err.response.data) {
 				setError(err.response.data.message);
-			}
-			else {
-				setError('Registration failed. Please try again.');
+			} else {
+				setError('Login failed. Please try again.');
 			}
 			console.log(err);
 		} finally {
 			setLoading(false);
 		}
-	}
+	};
 	return (
 		<>
 
@@ -53,6 +55,9 @@ const Signin = () => {
 								type="email"
 								placeholder="Email"
 								className="w-full border-none bg-transparent outline-none placeholder:italic focus:outline-none text-white"
+								onChange={(e) => setEmail(e.target.value)}
+								value={email}
+								required
 							/>
 						</div>
 
@@ -63,6 +68,9 @@ const Signin = () => {
 								type="password"
 								placeholder="Password"
 								className="w-full border-none bg-transparent outline-none placeholder:italic focus:outline-none text-white"
+								onChange={(e) => setPassword(e.target.value)}
+								value={password}
+								required
 							/>
 						</div>
 
