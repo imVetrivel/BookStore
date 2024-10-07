@@ -2,11 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { bookCollection } from './BookCollections';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { X } from 'lucide-react';
+import Admin from './Admin';
+
+const Popup = ({handlePop,popdata}) => {
+  
+  return (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg ring-4 ring-slate-600-500 ring-opacity-40 shadow-lg p-6 w-80">
+            <h2 className="text-xl font-bold mb-4">{popdata}</h2>
+            <p className="mb-4 text-gray-700">Added to cart!!</p>
+            <button
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300"
+              onClick={() => handlePop()}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+  )
+}
+
 
 // DetailedBookView component to display detailed information of the selected book
-const DetailedBookView = ({ book, onClose, handleCart }) => {
-  const [isAdded, setIsAdded] = useState(false);
-
+const DetailedBookView = ({ book, onClose, handleCart ,isAdded,setIsAdded}) => {
+  // const [isAdded, setIsAdded] = useState(false);
   const handleAddToCart = () => {
     handleCart(book);
     setIsAdded(true);
@@ -67,14 +86,15 @@ const DetailedBookView = ({ book, onClose, handleCart }) => {
 };
 
 // ProductCard component to display book information in a card layout
-const ProductCard = ({ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher, handleCart }) => {
+const ProductCard = ({ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher, handleCart ,handlePop}) => {
   const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
-
+  
   const handleAddToCart = (e) => {
     e.stopPropagation();
     handleCart({ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher });
     setIsAdded(true);
+    handlePop(title);
   };
 
   const openDetailedView = () => {
@@ -116,6 +136,7 @@ const ProductCard = ({ title, author, description, price, imageUrl, overview, st
             disabled={isAdded}
           >
             {isAdded ? 'Added' : 'Add to Cart'}
+            {/* {pop ? <Popup />:" "} */}
           </button>
         </div>
       </div>
@@ -124,6 +145,8 @@ const ProductCard = ({ title, author, description, price, imageUrl, overview, st
           book={{ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher }}
           onClose={closeDetailedView}
           handleCart={handleCart}
+          isAdded={isAdded}
+          setIsAdded={setIsAdded}
         />
       )}
     </>
@@ -131,7 +154,7 @@ const ProductCard = ({ title, author, description, price, imageUrl, overview, st
 };
 
 // GenreSection component to handle genre-based book display with filtering and pagination
-const GenreSection = ({ genre, books, search, handleCart }) => {
+const GenreSection = ({ genre, books, search, handleCart,handlePop}) => {
   const [startIndex, setStartIndex] = React.useState(0);
 
   const handlePrev = () => {
@@ -177,6 +200,7 @@ const GenreSection = ({ genre, books, search, handleCart }) => {
               format={book.format}
               publisher={book.publisher}
               handleCart={handleCart}
+              handlePop={handlePop}
             />
           ))}
         </div>
@@ -195,7 +219,23 @@ const GenreSection = ({ genre, books, search, handleCart }) => {
 // Home component to display all books or filtered genres with search functionality
 const Home = ({ search, handleCart,category }) => {
   const allBooks = [];
+  const[pop,setPop]=useState(false);
+  const[popdata,setPopdata]=useState("");
+  const [collection, setCollection] = useState(bookCollection);
 
+  // function handleAdmin(data){
+  //   if (bookCollection[data.genre]) {
+  //     bookCollection[data.genre].push(data);
+  //   } else {
+  //     bookCollection[data.genre] = [data];
+  //   }
+  //   console.log(data);
+  // }
+  
+  function handlePop(data){
+    setPopdata(data);
+    setPop(!pop);
+  }
   console.log(category);
 
   Object.values(bookCollection).forEach((genreBooks) => {
@@ -229,12 +269,18 @@ const Home = ({ search, handleCart,category }) => {
               books={books}
               search={search}
               handleCart={handleCart}
+              handlePop={handlePop}
             />
           ))
         ) : (
           <h2 className="text-2xl text-center">No books found.</h2>
         )}
+        {pop&&
+          <Popup handlePop={handlePop} popdata={popdata}/>
+        }
       </div>
+      {/* <Popup /> */}
+      {/* <Admin handleAdmin={handleAdmin}/> */}
     </div>
   );
 };

@@ -42,7 +42,7 @@ const Navbar = ({onSearch,onCategory}) => {
                 <select
                     value={category} 
                     onChange={handleCategoryChange}
-                    className="bg-transparent border-b border-blue-300 text-sm font-medium hover:text-blue-400 transition focus:outline-none focus:ring-0">
+                    className="bg-transparent  border-blue-300 text-sm font-medium hover:text-blue-400 transition focus:outline-none focus:ring-0">
                     <option className="bg-slate-800 text-white p-4" value="">Categories</option>
                     <option className="bg-slate-800 text-white p-4" value="Contemporary Fiction">Contemporary Fiction</option>
                     <option className="bg-slate-800 text-white p-4" value="Classic Literature">Classic Literature</option>
@@ -52,6 +52,7 @@ const Navbar = ({onSearch,onCategory}) => {
                 </select>
               </li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/cart')}>Checkout</li>
+              <li className="hover:text-blue-400 transition" onClick={() => navigate('/admin')}>Admin</li>
               <li><a href="#" className="hover:text-blue-400 transition">Login</a></li>
             </ul>
           </nav>

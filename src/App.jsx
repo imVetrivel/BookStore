@@ -7,6 +7,7 @@ import Home from './Components/Home'
 import { Routes,Route } from 'react-router-dom';
 import { Signup } from './pages/Signup'
 import { Signin } from './pages/Signin'
+import Admin from './Components/Admin';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
             <Cart books={cart}/> */}
             <Route path="/" element={<Home cart={cart} handleCart={handleCart} search={search} category={category} />} />
             <Route path="/cart" element={<Cart books={cart}/>} />
+            <Route path='/admin' element={<Admin />}/>
             <Route path='/register' element={<Signup/>}/>
             <Route path='/login' element={<Signin/>}/>
          </Routes>
