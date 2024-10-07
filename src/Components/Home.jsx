@@ -3,6 +3,8 @@ import { bookCollection } from './BookCollections';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { X } from 'lucide-react';
 import Admin from './Admin';
+import About from './About'
+
 
 const Popup = ({handlePop,popdata}) => {
   
@@ -113,9 +115,6 @@ const ProductCard = ({ title, author, description, price, imageUrl, overview, st
       >
         <div className="relative">
           <img className="w-full h-64 object-cover" src={imageUrl} alt={title} />
-          <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 m-2 rounded-md text-xs font-medium">
-            SALE
-          </div>
         </div>
         <div className="p-4 flex-grow">
           <h3 className="text-lg font-medium font-1">{title}</h3>
@@ -260,6 +259,7 @@ const Home = ({ search, handleCart,category }) => {
   
   return (
     <div>
+      
       <div className="container mx-auto px-4 py-8">
         {matchedGenres.length > 0 ? (
           matchedGenres.map(([genre, books]) => (
@@ -279,6 +279,7 @@ const Home = ({ search, handleCart,category }) => {
           <Popup handlePop={handlePop} popdata={popdata}/>
         }
       </div>
+      <About/>
       {/* <Popup /> */}
       {/* <Admin handleAdmin={handleAdmin}/> */}
     </div>
