@@ -4,40 +4,48 @@ import Navbar from './Components/Navbar';
 import Layout from './Components/Layout';
 import Cart from './Components/Cart';
 import Home from './Components/Home'
+import { Routes,Route } from 'react-router-dom';
 import { Signup } from './pages/Signup'
 import { Signin } from './pages/Signin'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
 function App() {
 
-      const [search, setSearch] = useState("");
-      const [cart, setCart] = useState([]);
-      function handleSearch(value) {
-         setSearch(value);
-      }
+   const[search,setSearch]=useState("");
+   const[cart,setCart]=useState([]);
+   const[category,setCategory]=useState("");
 
-      const handleCart = (product) => {
-         setCart([...cart, product]);
-      };
+   function handleSearch(value){
+      setSearch(value);
+   }
+
+   function handleCategory(value){
+      setCategory(value);
+   }
+
+   // console.log(category)
+   
+   const handleCart = (product) => {
+      setCart([...cart, product]);
+    };
 
       useEffect(() => {
          console.log(cart);
       }, [cart])
 
-      return (
-         <>
+   return (
+      <>
+         <Navbar onSearch={handleSearch} onCategory={handleCategory}/>
+         <Routes>
             {/* <Navbar onSearch={handleSearch} books={cart}/>
-         <Home cart={cart} handleCart={handleCart} search={search}/> */}
-            {/* <Cart books={cart}/> */}
-            <BrowserRouter>
-            <Routes>
-
-               <Route path='/' element={<Home/>}/>
-               <Route path='/register' element={<Signup/>}/>
-               <Route path='/login' element={<Signin/>}/>
-            </Routes>
-            </BrowserRouter>
-         </>
-      );
-   }
+            <Home cart={cart} handleCart={handleCart} search={search}/>
+            <Cart books={cart}/> */}
+            <Route path="/" element={<Home cart={cart} handleCart={handleCart} search={search} category={category} />} />
+            <Route path="/cart" element={<Cart books={cart}/>} />
+            <Route path='/register' element={<Signup/>}/>
+            <Route path='/login' element={<Signin/>}/>
+         </Routes>
+      </>
+   );
+}
 
 export default App;
