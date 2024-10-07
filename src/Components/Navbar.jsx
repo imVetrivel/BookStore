@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = ({onSearch,onCategory}) => {
 
@@ -52,7 +52,7 @@ const Navbar = ({onSearch,onCategory}) => {
                 </select>
               </li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/cart')}>Checkout</li>
-              <li><a href="#" className="hover:text-blue-400 transition">Login</a></li>
+              <li><Link to={'/register'} className="hover:text-blue-400 transition">Login</Link></li>
             </ul>
           </nav>
 
