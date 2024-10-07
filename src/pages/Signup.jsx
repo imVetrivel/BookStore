@@ -87,7 +87,7 @@ const Signup = () => {
 
                 <p className="text-center text-lg text-white">
                     Already Have an Account? 
-                    <Link to='/login'
+                    <Link to='/'
                         className="font-medium text-indigo-500 underline-offset-4 hover:underline ml-2"
                     >
                         Sign in
