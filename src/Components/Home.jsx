@@ -273,7 +273,9 @@ const Home = ({ search, handleCart,category }) => {
             />
           ))
         ) : (
+          <div className='w-full h-full my-96'>
           <h2 className="text-2xl text-center">No books found.</h2>
+          </div>
         )}
         {pop&&
           <Popup handlePop={handlePop} popdata={popdata}/>
