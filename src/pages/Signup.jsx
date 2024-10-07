@@ -18,12 +18,18 @@ const Signup = () => {
         setSuccess('');
 
         try {
-            const result = await axios.post('http://localhost:5000/register', { name, email, password });
+            const result = await axios.post('http://localhost:5000/user/register', { name, email, password });
             setSuccess('Registration successful!');
             console.log(result);
         } catch (err) {
+            if (err.response && err.response.data) {
+                setError(err.response.data.message);
+            }
+            else
+            {
             setError('Registration failed. Please try again.');
-            console.log(err);
+        }
+        console.log(err);
         } finally {
             setLoading(false);
         }
@@ -81,7 +87,7 @@ const Signup = () => {
 
                 <p className="text-center text-lg text-white">
                     Already Have an Account? 
-                    <Link to='/signin'
+                    <Link to='/login'
                         className="font-medium text-indigo-500 underline-offset-4 hover:underline ml-2"
                     >
                         Sign in
