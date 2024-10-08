@@ -1,4 +1,4 @@
-export const bookCollection = {
+export let bookCollection = {
   "Contemporary Fiction": [
     {
       title: "The Midnight Library",
