@@ -3,23 +3,13 @@ import React from 'react';
 const About = () => {
   return (
     <>
-      {/* About Us Section */}
-      <div className=" bg-cover bg-center bg-no-repeat h-auto py-20" style={{ backgroundImage: "url('/public/assets/img/others/about.jpg')" }}>
-        <div className="inset-0 bg-gray-900 bg-opacity-70"></div> {/* Dark Overlay */}
-        <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-          <h2 className="text-base tracking-wide uppercase text-slate-100 font-1">About Us</h2>
-          <p className="mt-2 text-4xl leading-10 font-bold tracking-tight font-1">
-            Welcome to BookArt
-          </p>
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-slate-100   font-3">
-            Your one-stop destination for books of all genres. We bring stories, knowledge, and inspiration to readers worldwide.
-          </p>
-        </div>
-      </div>
 
-      {/* Our Story Section */}
-      <div className="bg-gray-50 py-12">
+
+      <div>
+        <h1 className='text-center text-4xl font-5 text- pt-5 font-extrabold'> About Bookart</h1>
+      <div className="bg-gray-50 pb-32 pt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex justify-center">
               <img
@@ -29,15 +19,22 @@ const About = () => {
               />
             </div>
             <div className="flex flex-col justify-center">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">Our Story</h3>
-              <p className="mt-2 text-base text-gray-600">
-                Founded by passionate book lovers, our bookstore offers a curated collection of both bestsellers and hidden gems. We aim to make books accessible to everyone, whether you're looking for classic literature, the latest releases, or something entirely unique.
+              <h3 className="text-2xl leading-6 font-medium text-gray-900 pb-3 font-1">Our mission</h3>
+              <p className='text-justify w-auto font-3'>
+                We have the best Collection of top rated books in different genres.
+                Our books are carefully selected to ensure that you get the best reading experience. <br />
+                We offer a reasonable price as well as better user experience. <br />
+                <i>Our Popular Genres:</i> <br />
+                <ul className="space-y-1 list-disc pl-7 text-slate-500 pb-2 text-sm">
+                  <li>Contemporary Fiction</li>
+                  <li>Classic Literature</li>
+                  <li>Mystery/Thriller</li>
+                  <li>Science Fiction/Fantasy</li>
+                  <li>Non-fiction</li>
+                </ul>
+                <b>“A reader lives a thousand lives before he dies . . . The man who never reads lives only one.” </b>- <i>George R.R. Martin</i>
               </p>
 
-              <h3 className="mt-6 text-lg leading-6 font-medium text-gray-900">Our Mission</h3>
-              <p className="mt-2 text-base text-gray-600">
-                Our mission is to inspire readers by delivering high-quality books and fostering a community that loves reading. We strive to promote literacy and the joy of reading with our wide selection and excellent customer service.
-              </p>
             </div>
           </div>
         </div>
@@ -46,35 +43,53 @@ const About = () => {
       {/* Footer Section */}
       <footer className="bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
             {/* Footer Column 1 */}
             <div>
-              <h3 className="text-lg font-semibold">About BookArt</h3>
-              <p className="mt-4 text-sm text-gray-400">
-                We are committed to offering the best selection of books to our customers, ensuring a seamless shopping experience.
-              </p>
+              <div className="text-3xl font-bold font-5 py-16">
+                <h1>Bookart </h1>
+              </div>
             </div>
-            
+
+            {/* Footer Column 3 */}
+            <div>
+              <h3 className="text-lg font-semibold">Popular Categories</h3>
+              <ul className="mt-4 space-y-2">
+                <li><a href="/home" className="hover:underline">Contemporary Fiction</a></li>
+                <li><a href="/about" className="hover:underline">Classic Literature</a></li>
+                <li><a href="/contact" className="hover:underline">Mystery/Thriller</a></li>
+                <li><a href="/contact" className="hover:underline">Science Fiction/Fantasy</a></li>
+                <li><a href="/contact" className="hover:underline">Non-fiction</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold">Our Best Picks</h3>
+              <ul className="mt-4 space-y-2">
+                <li><a href="" className="hover:underline">The Overstory</a></li>
+                <li><a href="" className="hover:underline">Beloved</a></li>
+                <li><a href="" className="hover:underline">Dune</a></li>
+                <li><a href="" className="hover:underline">Educated</a></li>
+                <li><a href="/" className="hover:underline">Big Little Lies</a></li>
+              </ul>
+            </div>
             {/* Footer Column 2 */}
             <div>
               <h3 className="text-lg font-semibold">Quick Links</h3>
               <ul className="mt-4 space-y-2">
                 <li><a href="/home" className="hover:underline">Home</a></li>
                 <li><a href="/about" className="hover:underline">About Us</a></li>
-                <li><a href="/contact" className="hover:underline">Contact</a></li>
+                <li><a href="/login" className="hover:underline">Login</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold">Contact Info</h3>
+              <ul className="mt-4 space-y-2">
+                <li><b>Email: </b><span className='text-sm'>Bookart@gmail.com</span></li>
+                <li><b>Phone:</b><span className='text-sm'>(+91) 9876543210</span></li>
+                <li><b>Address: </b><span className='text-sm'>Abc Street, Coimbatore</span></li>
               </ul>
             </div>
 
-            {/* Footer Column 3 */}
-            <div>
-              <h3 className="text-lg font-semibold">Contact Us</h3>
-              {/* <ul className="mt-4 text-sm text-gray-400">
-                <li>123 Bookstore Lane</li>
-                <li>City, Country 12345</li>
-                <li>Email: support@bookart.com</li>
-                <li>Phone: +123 456 7890</li>
-              </ul> */}
-            </div>
           </div>
 
           {/* Bottom Footer */}
@@ -83,6 +98,7 @@ const About = () => {
           </div>
         </div>
       </footer>
+      </div>
     </>
   );
 }

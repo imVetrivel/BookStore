@@ -5,7 +5,7 @@ export let bookCollection = {
       author: "Matt Haig",
       description: "A novel about all the choices that go into a life well lived.",
       price: "378",
-      imageUrl: '/assets/img/c-fiction/Tml.jpeg',
+      imageUrl: '../assets/img/c-fiction/Tml.jpeg',
       overview: "The Midnight Library follows Nora Seed, a woman who finds herself in a mystical library between life and death. Each book represents a version of her life had she made different choices. The novel explores themes of regret, second chances, and the true meaning of a fulfilling life.",
       stockAvailability: "In Stock",
       language: "English",
