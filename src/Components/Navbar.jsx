@@ -54,7 +54,7 @@ const Navbar = ({onSearch,onCategory}) => {
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/about')}>About</li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/cart')}>Checkout</li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/admin')}>Admin</li>
-              <li><a href="#" className="hover:text-blue-400 transition">Login</a></li>
+              <li><a onClick={() => navigate('/login')} className="hover:text-blue-400 transition">Login</a></li>
             </ul>
           </nav>
 

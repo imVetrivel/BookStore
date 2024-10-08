@@ -10,6 +10,7 @@ import { Signin } from './pages/Signin'
 import Admin from './Components/Admin';
 import About from './Components/About'
 
+
 function App() {
 
    const[search,setSearch]=useState("");
@@ -42,9 +43,9 @@ function App() {
             <Home cart={cart} handleCart={handleCart} search={search}/>
             <Cart books={cart}/> */}
 
-            <Route path='/' element={<Signin/>}/>
+            <Route path='/' element={<Home cart={cart} handleCart={handleCart} search={search} category={category} />}/>
             <Route path='/register' element={<Signup/>}/>
-            <Route path="/home" element={<Home cart={cart} handleCart={handleCart} search={search} category={category} />} />
+            <Route path="/login" element={<Signin/>} />
             <Route path="/cart" element={<Cart books={cart}/>} />
             <Route path='/admin' element={<Admin />}/>
             <Route path='/about' element={<About/>}/>
