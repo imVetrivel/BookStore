@@ -4,10 +4,13 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { X } from 'lucide-react';
 import Admin from './Admin';
 import About from './About'
+import { useNavigate } from 'react-router-dom';
 
 
 const Popup = ({handlePop,popdata}) => {
-  
+
+  const navigate=useNavigate();
+
   return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg ring-4 ring-slate-600-500 ring-opacity-40 shadow-lg p-6 w-80">
@@ -18,6 +21,12 @@ const Popup = ({handlePop,popdata}) => {
               onClick={() => handlePop()}
             >
               Close
+            </button>
+            <button
+              className="px-4 py-2 bg-transparent text-black border-2 border-black rounded-lg hover:bg-blue-600 hover:text-white transition duration-300 ml-20"
+              onClick={() => navigate('/cart')}
+            >
+              CheckOut
             </button>
           </div>
         </div>
