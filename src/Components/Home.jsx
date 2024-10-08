@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { bookCollection } from './BookCollections';
+// import { bookCollection } from './BookCollections';
+import axios from 'axios';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { X } from 'lucide-react';
 import Admin from './Admin';
@@ -28,10 +29,34 @@ const Popup = ({handlePop,popdata}) => {
 // DetailedBookView component to display detailed information of the selected book
 const DetailedBookView = ({ book, onClose, handleCart ,isAdded,setIsAdded}) => {
   // const [isAdded, setIsAdded] = useState(false);
-  const handleAddToCart = () => {
-    handleCart(book);
-    setIsAdded(true);
+  // const handleAddToCart = () => {
+  //   handleCart(book);
+  //   setIsAdded(true);
+  // };
+
+
+  const handleAddToCart = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/books', {
+        title: book.title,
+        author: book.author,
+        description: book.description,
+        price: book.price,
+        imageUrl: book.imageUrl,
+        overview: book.overview,
+        language: book.language,
+        genre: book.genre,
+        publisher: book.publisher,
+      });
+      setIsAdded(true);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
   };
+
+
+
+
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
@@ -92,12 +117,37 @@ const ProductCard = ({ title, author, description, price, imageUrl, overview, st
   const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   
-  const handleAddToCart = (e) => {
-    e.stopPropagation();
-    handleCart({ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher });
-    setIsAdded(true);
-    handlePop(title);
+  // const handleAddToCart = (e) => {
+  //   e.stopPropagation();
+  //   handleCart({ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher });
+  //   setIsAdded(true);
+  //   handlePop(title);
+  // };
+
+
+
+
+  const handleAddToCart = async (e) => {
+    e.stopPropagation(); // Prevents opening the detailed view when adding to cart
+    try {
+      const response = await axios.post('http://localhost:5000/books', {
+        title,
+        author,
+        description,
+        price,
+        imageUrl,
+        overview,
+        language,
+        genre,
+        publisher,
+      });
+      setIsAdded(true);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
   };
+
+
 
   const openDetailedView = () => {
     setIsDetailedViewOpen(true);
@@ -216,50 +266,137 @@ const GenreSection = ({ genre, books, search, handleCart,handlePop}) => {
 };
 
 // Home component to display all books or filtered genres with search functionality
-const Home = ({ search, handleCart,category }) => {
-  const allBooks = [];
-  const[pop,setPop]=useState(false);
-  const[popdata,setPopdata]=useState("");
-  const [collection, setCollection] = useState(bookCollection);
+// const Home = ({ search, handleCart,category }) => {
+//   const allBooks = [];
+//   const[pop,setPop]=useState(false);
+//   const[popdata,setPopdata]=useState("");
+//   const [collection, setCollection] = useState(bookCollection);
 
-  // function handleAdmin(data){
-  //   if (bookCollection[data.genre]) {
-  //     bookCollection[data.genre].push(data);
-  //   } else {
-  //     bookCollection[data.genre] = [data];
-  //   }
-  //   console.log(data);
-  // }
+//   // function handleAdmin(data){
+//   //   if (bookCollection[data.genre]) {
+//   //     bookCollection[data.genre].push(data);
+//   //   } else {
+//   //     bookCollection[data.genre] = [data];
+//   //   }
+//   //   console.log(data);
+//   // }
   
-  function handlePop(data){
+//   function handlePop(data){
+//     setPopdata(data);
+//     setPop(!pop);
+//   }
+//   console.log(category);
+
+//   Object.values(bookCollection).forEach((genreBooks) => {
+//     allBooks.push(...genreBooks);
+//   });
+
+//   let matchedGenres=[];
+  
+//   if(category){
+//     matchedGenres = Object.entries(bookCollection).filter(([genre, books]) =>
+//     books.some((book) =>
+//       genre.toLowerCase().includes(category.toLowerCase()) &&
+//       book.title.toLowerCase().includes(search.toLowerCase())
+//     ));
+//   }else{
+//     matchedGenres = Object.entries(bookCollection).filter(([genre, books]) =>
+//       books.some((book) =>
+//         book.title.toLowerCase().includes(search.toLowerCase())
+//       )
+//     );
+//   }
+  
+//   return (
+//     <div>
+      
+//       <div className="container mx-auto px-4 py-8">
+//         {matchedGenres.length > 0 ? (
+//           matchedGenres.map(([genre, books]) => (
+//             <GenreSection
+//               key={genre}
+//               genre={genre}
+//               books={books}
+//               search={search}
+//               handleCart={handleCart}
+//               handlePop={handlePop}
+//             />
+//           ))
+//         ) : (
+//           <div className='w-full h-full my-96'>
+//           <h2 className="text-2xl text-center">No books found.</h2>
+//           </div>
+//         )}
+//         {pop&&
+//           <Popup handlePop={handlePop} popdata={popdata}/>
+//         }
+//       </div>
+//       <About/>
+//       {/* <Popup /> */}
+//       {/* <Admin handleAdmin={handleAdmin}/> */}
+//     </div>
+//   );
+// };
+
+
+
+
+
+const Home = ({ search, handleCart, category }) => {
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [pop, setPop] = useState(false);
+  const [popdata, setPopdata] = useState("");
+
+  // Fetch all books from the backend
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/books');
+        setBooks(response.data); // Save the books fetched from the backend
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+        setError('Failed to load books');
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, []); // Empty dependency array means this runs once after the component mounts
+
+  const handlePop = (data) => {
     setPopdata(data);
     setPop(!pop);
-  }
-  console.log(category);
+  };
 
-  Object.values(bookCollection).forEach((genreBooks) => {
-    allBooks.push(...genreBooks);
-  });
-
-  let matchedGenres=[];
-  
-  if(category){
-    matchedGenres = Object.entries(bookCollection).filter(([genre, books]) =>
-    books.some((book) =>
-      genre.toLowerCase().includes(category.toLowerCase()) &&
-      book.title.toLowerCase().includes(search.toLowerCase())
-    ));
-  }else{
-    matchedGenres = Object.entries(bookCollection).filter(([genre, books]) =>
-      books.some((book) =>
-        book.title.toLowerCase().includes(search.toLowerCase())
-      )
-    );
+  if (loading) {
+    return <div>Loading...</div>; // Show loading while fetching data
   }
-  
+
+  if (error) {
+    return <div>{error}</div>; // Show error if there's any issue
+  }
+
+  const matchedGenres = Object.entries(
+    books.reduce((acc, book) => {
+      if (category && !book.genre.toLowerCase().includes(category.toLowerCase())) {
+        return acc;
+      }
+      const genre = book.genre;
+      if (!acc[genre]) {
+        acc[genre] = [];
+      }
+      acc[genre].push(book);
+      return acc;
+    }, {})
+  ).filter(([genre, books]) =>
+    books.some((book) => book.title.toLowerCase().includes(search.toLowerCase()))
+  );
+
   return (
     <div>
-      
       <div className="container mx-auto px-4 py-8">
         {matchedGenres.length > 0 ? (
           matchedGenres.map(([genre, books]) => (
@@ -269,23 +406,21 @@ const Home = ({ search, handleCart,category }) => {
               books={books}
               search={search}
               handleCart={handleCart}
-              handlePop={handlePop}
+              handlePop={handlePop} // Pass handlePop to handle popup click
             />
           ))
         ) : (
-          <div className='w-full h-full my-96'>
-          <h2 className="text-2xl text-center">No books found.</h2>
+          <div className="w-full h-full my-96">
+            <h2 className="text-2xl text-center">No books found.</h2>
           </div>
         )}
-        {pop&&
-          <Popup handlePop={handlePop} popdata={popdata}/>
-        }
+        {/* Display the popup if pop is true */}
+        {pop && <Popup handlePop={handlePop} popdata={popdata} />}
       </div>
-      <About/>
-      {/* <Popup /> */}
-      {/* <Admin handleAdmin={handleAdmin}/> */}
+      <About />
     </div>
   );
 };
+
 
 export default Home;
