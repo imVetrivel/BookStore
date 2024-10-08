@@ -40,7 +40,7 @@ const Signup = () => {
     <>
       <div
         style={{
-          backgroundImage: `url('/public/assets/img/others/about.jpg')`, // replace with your image path
+          backgroundImage: `url('/public/assets/img/others/Login_signup.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           height: '100vh',

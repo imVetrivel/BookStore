@@ -4,7 +4,7 @@ import Navbar from './Components/Navbar';
 import Layout from './Components/Layout';
 import Cart from './Components/Cart';
 import Home from './Components/Home'
-import { Routes,Route } from 'react-router-dom';
+import { Routes,Route, useLocation } from 'react-router-dom';
 import { Signup } from './pages/Signup'
 import { Signin } from './pages/Signin'
 import Admin from './Components/Admin';
@@ -12,6 +12,9 @@ import About from './Components/About'
 
 
 function App() {
+
+   const location=useLocation();
+   const hidebar=location.pathname ==='/'||location.pathname==='/register';
 
    const[search,setSearch]=useState("");
    const[cart,setCart]=useState([]);
@@ -21,6 +24,16 @@ function App() {
       setSearch(value);
    }
 
+   const[islogin,setLogin]=useState(false);
+   function handleLogin(){
+      setLogin(!islogin);
+   }
+
+   const[isadmin,setAdmin]=useState(false);
+   function handleAdmin(){
+      setAdmin(!isadmin);
+   }
+   console.log("Login : "+islogin);
    function handleCategory(value){
       setCategory(value);
    }
@@ -34,10 +47,11 @@ function App() {
       useEffect(() => {
          console.log(cart);
       }, [cart])
-
+      
    return (
       <>
-         <Navbar onSearch={handleSearch} onCategory={handleCategory}/>
+         {/* {!hidebar && <Navbar onSearch={handleSearch} onCategory={handleCategory} islogin={islogin} isadmin={isadmin}/>} */}
+         <Navbar/>
          <Routes>
             {/* <Navbar onSearch={handleSearch} books={cart}/>
             <Home cart={cart} handleCart={handleCart} search={search}/>

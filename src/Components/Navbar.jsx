@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Search } from 'lucide-react';
+import { LogOut, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Navbar = ({onSearch,onCategory}) => {
+const Navbar = ({onSearch,onCategory,islogin,isadmin}) => {
 
   const[search,setSearch]=useState("");
   const[category,setCategory]=useState("");
@@ -50,7 +50,7 @@ const Navbar = ({onSearch,onCategory}) => {
                     <option className="bg-slate-800 text-white p-4" value="Non-fiction">Non-fiction</option>
                 </select>
               </li>
-              <li className="hover:text-blue-400 transition" onClick={() => navigate('/home')}>Home</li>
+              <li className="hover:text-blue-400 transition" onClick={() => navigate('/')}>Home</li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/about')}>About</li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/cart')}>Checkout</li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/admin')}>Admin</li>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Signin = () => {
+const Signin = ({handleLogin,handleAdmin}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,8 +21,13 @@ const Signin = () => {
       setSuccess('Login successful!!!');
 
       setTimeout(() => {
-        navigate('/');
+        handleLogin();
+        navigate('/home');
       }, 1500);
+      if(email==='sudhir@gmail.com'){
+        handleAdmin();
+      }
+      console.log(result);
 
     } catch (err) {
       if (err.response && err.response.data) {
@@ -40,7 +45,7 @@ const Signin = () => {
     <>
       <div
         style={{
-          backgroundImage: `url('/public/assets/img/others/about.jpg')`,
+          backgroundImage: `url('/public/assets/img/others/Login_signup.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           height: '100vh',
@@ -73,7 +78,8 @@ const Signin = () => {
               <input
                 type="email"
                 placeholder="Email"
-                className="w-full h-11 p-3 font-1 border-0 rounded-md bg-transparent outline-none placeholder:italic focus:outline-2 focus:outline-blue-400 hover:outline-green-400"
+
+                className="w-full h-11 p-3 font-1 border-0 rounded-md bg-transparent outline-none placeholder:italic focus:outline-2 focus:outline-blue-400 text-black hover:outline-green-400"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 required
@@ -84,7 +90,8 @@ const Signin = () => {
               <input
                 type="password"
                 placeholder="Password"
-                className="w-full h-11 rounded-lg p-3 border-0 bg-transparent outline-none placeholder:italic focus:outline-2 focus:outline-blue-500 hover:outline-green-400"
+
+                className="w-full h-11 rounded-lg p-3 border-0 bg-transparent outline-none placeholder:italic focus:outline-2 focus:outline-blue-500 text-black  hover:outline-green-400"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 required
@@ -112,6 +119,14 @@ const Signin = () => {
                 className="font-medium text-indigo-400 underline-offset-4 hover:text-blue-400 hover:underline"
               >
                 Signup
+              </Link>
+            </p>
+            <p className="text-center text-lg font-1 text-white" >
+              <Link
+                to="/home"
+                className="transform text-center font-semibold text-gray-100 duration-100 font-1 hover:text-gray-400"
+              >
+                Continue without Login
               </Link>
             </p>
           </section>
