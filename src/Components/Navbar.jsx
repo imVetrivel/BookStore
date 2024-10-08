@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Search } from 'lucide-react';
+import { LogOut, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Navbar = ({onSearch,onCategory}) => {
+const Navbar = ({onSearch,onCategory,islogin,isadmin}) => {
 
   const[search,setSearch]=useState("");
   const[category,setCategory]=useState("");
@@ -53,8 +53,12 @@ const Navbar = ({onSearch,onCategory}) => {
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/home')}>Home</li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/about')}>About</li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/cart')}>Checkout</li>
-              <li className="hover:text-blue-400 transition" onClick={() => navigate('/admin')}>Admin</li>
-              <li><a href="#" className="hover:text-blue-400 transition">Login</a></li>
+              { isadmin && <li className="hover:text-blue-400 transition" onClick={() => navigate('/admin')}>Admin</li> }
+              {islogin ?
+                 <li className="hover:text-blue-400 transition" onClick={() => navigate('/')}>LogOut</li> 
+                 :
+                 <li className="hover:text-blue-400 transition" onClick={() => navigate('/')}>Login</li>
+              }
             </ul>
           </nav>
 
