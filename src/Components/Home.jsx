@@ -84,7 +84,7 @@ const DetailedBookView = ({ book, onClose ,isAdded,setIsAdded}) => {
       }
 
       try {
-          const response = await axios.put('http://localhost:5000/user/addcart', {
+          const response = await axios.put('https://bookstore-server-1.onrender.com/user/addcart', {
               userId: user._id,
               bookId
           });
@@ -172,7 +172,7 @@ const ProductCard = ({ title, author, description, price, imageUrl, overview, st
     }
 
     try {
-        const response = await axios.put('http://localhost:5000/user/addcart', {
+        const response = await axios.put('https://bookstore-server-1.onrender.com/user/addcart', {
             userId: user._id,
             bookId
         });
@@ -326,7 +326,7 @@ const Home = ({ search, category, OnCategory }) => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/books');
+        const response = await axios.get('https://bookstore-server-1.onrender.com/books');
         setBooks(response.data);
         setLoading(false);
       } catch (error) {
