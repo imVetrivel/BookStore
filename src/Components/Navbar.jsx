@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
-const Navbar = ({ onSearch, onCategory = () => {} }) => {
+const Navbar = ({ onSearch, onCategory}) => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const { isLogin, user } = useAuth();
@@ -59,7 +59,7 @@ const Navbar = ({ onSearch, onCategory = () => {} }) => {
                   <option className="bg-slate-800 text-white p-4" value="Science Fiction/Fantasy">Science Fiction/Fantasy</option>
                   <option className="bg-slate-800 text-white p-4" value="Non-fiction">Non-fiction</option>
                 </select>
-              </li>
+              </li> 
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/')}>Home</li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/about')}>About</li>
               <li className="hover:text-blue-400 transition" onClick={() => navigate('/cart')}>Checkout</li>
@@ -67,10 +67,12 @@ const Navbar = ({ onSearch, onCategory = () => {} }) => {
               {isLogin && user.role === 'admin' && (
                 <li className="hover:text-blue-400 transition" onClick={() => navigate('/admin')}>Admin</li>
               )}
-
-              <li>
+              {isLogin ? <li onClick={() => navigate('/login')} className="hover:text-blue-400 transition">Logout</li>
+                  :<li onClick={() => navigate('/login')} className="hover:text-blue-400 transition">Login</li>
+              }
+              {/* <li>
                 <a onClick={() => navigate('/login')} className="hover:text-blue-400 transition">Login</a>
-              </li>
+              </li> */}
             </ul>
           </nav>
         </div>

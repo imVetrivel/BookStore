@@ -9,10 +9,22 @@ const Cart = () => {
     const [loading, setLoading] = useState(true);
     const [showPopup, setShowPopup] = useState(false);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const[cartid,setCartid]=useState([]);
 
     const handleRemove = (index) => {
-        const updatedCart = cartItems.filter((_, i) => i !== index); // Use local state for removal
-        setCartItems(updatedCart);
+        axios.delete("http://localhost:5000/user/deletecart", {
+            data: { userId: user._id, index }
+        })
+        .then(res => {
+            console.log(res.data); 
+            const updatedCart = cartItems.filter((_, i) => i !== index);
+            setCartItems(updatedCart);
+        })
+        .catch(error => {
+            console.error(error.message); 
+        });
+        
+        console.log(index); 
     };
 
     const handleOrder = (e) => {
@@ -36,7 +48,11 @@ const Cart = () => {
             if (user && user._id) {
                 try {
                     const response = await axios.get(`http://localhost:5000/user/getcart/${user._id}`);
+                    // setCartid([response.data.cart_items._id]);
+                    // console.log(cartid);
                     setCartItems(response.data?.cart.cart_items || []); // Set local cart items
+                    setCartid(response.data?.cart.cart_items);
+                    console.log(cartid);
                     // console.log(response);
                 } catch (err) {
                     console.error(err);
