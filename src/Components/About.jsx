@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const About = () => {
+const About = ({OnCategory}) => {
+  
+  const handleChange = (event) => {
+    const value = event.target.getAttribute('data-value');
+    console.log(value); 
+    if (typeof OnCategory === 'function') {
+        OnCategory(value);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+        console.error("OnCategory is not a function.");
+    }
+  };
   return (
     <>
-
-
       <div>
         <h1 className='text-center text-4xl font-5 text- pt-5 font-extrabold'> About Bookart</h1>
       <div className="bg-gray-50 pb-32 pt-14">
@@ -27,10 +36,10 @@ const About = () => {
                 <i>Our Popular Genres:</i> </p> <br />
                 <ul className="space-y-1 list-disc pl-7 text-slate-500 pb-2 text-sm">
                   <li>Contemporary Fiction</li>
-                  <li>Classic Literature</li>
-                  <li>Mystery/Thriller</li>
-                  <li>Science Fiction/Fantasy</li>
-                  <li>Non-fiction</li>
+                  <li value="Classic Literature">Classic Literature</li>
+                  <li value="Mystery/Thriller">Mystery/Thriller</li>
+                  <li value="Science Fiction/Fantasy">Science Fiction/Fantasy</li>
+                  <li  value="Non-fiction">Non-fiction</li>
                 </ul>
                 <b>“A reader lives a thousand lives before he dies . . . The man who never reads lives only one.” </b>- <i>George R.R. Martin</i>
              
@@ -54,12 +63,12 @@ const About = () => {
             {/* Footer Column 3 */}
             <div>
               <h3 className="text-lg font-semibold">Popular Categories</h3>
-              <ul className="mt-4 space-y-2">
-                <li><a href="/" className="hover:underline">Contemporary Fiction</a></li>
-                <li><a href="/about" className="hover:underline">Classic Literature</a></li>
-                <li><a href="/contact" className="hover:underline">Mystery/Thriller</a></li>
-                <li><a href="/contact" className="hover:underline">Science Fiction/Fantasy</a></li>
-                <li><a href="/contact" className="hover:underline">Non-fiction</a></li>
+              <ul className="space-y-1 pl-7 text-slate-500 pb-2 text-sm list-none" onClick={handleChange}>
+                <li data-value="Contemporary Fiction">Contemporary Fiction</li>
+                <li data-value="Classic Literature">Classic Literature</li>
+                <li data-value="Mystery/Thriller">Mystery/Thriller</li>
+                <li data-value="Science Fiction/Fantasy">Science Fiction/Fantasy</li>
+                <li data-value="Non-fiction">Non-fiction</li>
               </ul>
             </div>
             <div>

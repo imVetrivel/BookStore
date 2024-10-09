@@ -272,7 +272,7 @@ const GenreSection = ({ genre, books, search,handlePop}) => {
 
 
 
-const Home = ({ search, category }) => {
+const Home = ({ search, category ,OnCategory}) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -346,7 +346,7 @@ const Home = ({ search, category }) => {
         {/* Display the popup if pop is true */}
         {pop && <Popup handlePop={handlePop} popdata={popdata} />}
       </div>
-      <About />
+      <About OnCategory={OnCategory}/>
     </div>
   );
 };

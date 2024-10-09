@@ -68,7 +68,7 @@ function App() {
   return (
     <AuthProvider>
       <div>
-          <Navbar onSearch={handleSearch} onCategory={handleCategory} />
+          {hidebar&&<Navbar onSearch={handleSearch} onCategory={handleCategory} />}
 
         <div className="book-list">
           {isLoading ? (
@@ -88,12 +88,12 @@ function App() {
         </div>
 
         <Routes>
-          <Route path='/' element={<Home search={searchTerm} category={selectedCategory} />} />
+          <Route path='/' element={<Home search={searchTerm} category={selectedCategory} OnCategory={handleCategory}/>} />
           <Route path='/register' element={<Signup />} />
           <Route path="/login" element={<Signin />} />
           <Route path="/cart" element={<Cart />} />
           <Route path='/admin' element={<Admin />} />
-          <Route path='/about' element={<About />} />
+          <Route path='/about' element={<About OnCategory={handleCategory}/>} />
         </Routes>
       </div>
     </AuthProvider>

@@ -131,6 +131,7 @@ const Signin = () => {
             <p className="text-center text-lg font-1 text-white" >
               <Link
                 to="/"
+                onClick={()=>setLogin(false)}
                 className="transform text-center font-semibold text-gray-100 duration-100 font-1 hover:text-gray-400"
               >
                 Continue without Login
