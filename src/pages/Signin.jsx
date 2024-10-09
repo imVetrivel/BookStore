@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext.jsx';
 
-const Signin = ({handleLogin,handleAdmin}) => {
+const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+  const { setLogin, user,setUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,15 +21,14 @@ const Signin = ({handleLogin,handleAdmin}) => {
     try {
       const result = await axios.post('http://localhost:5000/user/signin', { email, password });
       setSuccess('Login successful!!!');
+      setLogin(true);
+      setUser(result.data?.user);
+      // console.log(user?.name);
 
       setTimeout(() => {
-        handleLogin();
-        navigate('/home');
+        // handleLogin();
+        navigate('/');
       }, 1500);
-      if(email==='sudhir@gmail.com'){
-        handleAdmin();
-      }
-      console.log(result);
 
     } catch (err) {
       if (err.response && err.response.data) {
@@ -40,6 +41,12 @@ const Signin = ({handleLogin,handleAdmin}) => {
       setLoading(false);
     }
   };
+
+  // useEffect(() => {
+  //   if (user) {
+  //     console.log("User's name:", user.name);
+  //   }
+  // }, [user]);
 
   return (
     <>
@@ -123,7 +130,7 @@ const Signin = ({handleLogin,handleAdmin}) => {
             </p>
             <p className="text-center text-lg font-1 text-white" >
               <Link
-                to="/home"
+                to="/"
                 className="transform text-center font-semibold text-gray-100 duration-100 font-1 hover:text-gray-400"
               >
                 Continue without Login

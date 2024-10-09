@@ -24,7 +24,7 @@ const About = () => {
                 We have the best Collection of top rated books in different genres.
                 Our books are carefully selected to ensure that you get the best reading experience. <br />
                 We offer a reasonable price as well as better user experience. <br />
-                <i>Our Popular Genres:</i> <br />
+                <i>Our Popular Genres:</i> </p> <br />
                 <ul className="space-y-1 list-disc pl-7 text-slate-500 pb-2 text-sm">
                   <li>Contemporary Fiction</li>
                   <li>Classic Literature</li>
@@ -33,7 +33,7 @@ const About = () => {
                   <li>Non-fiction</li>
                 </ul>
                 <b>“A reader lives a thousand lives before he dies . . . The man who never reads lives only one.” </b>- <i>George R.R. Martin</i>
-              </p>
+             
 
             </div>
           </div>
@@ -55,7 +55,7 @@ const About = () => {
             <div>
               <h3 className="text-lg font-semibold">Popular Categories</h3>
               <ul className="mt-4 space-y-2">
-                <li><a href="/home" className="hover:underline">Contemporary Fiction</a></li>
+                <li><a href="/" className="hover:underline">Contemporary Fiction</a></li>
                 <li><a href="/about" className="hover:underline">Classic Literature</a></li>
                 <li><a href="/contact" className="hover:underline">Mystery/Thriller</a></li>
                 <li><a href="/contact" className="hover:underline">Science Fiction/Fantasy</a></li>
@@ -76,7 +76,7 @@ const About = () => {
             <div>
               <h3 className="text-lg font-semibold">Quick Links</h3>
               <ul className="mt-4 space-y-2">
-                <li><a href="/home" className="hover:underline">Home</a></li>
+                <li><a href="/" className="hover:underline">Home</a></li>
                 <li><a href="/about" className="hover:underline">About Us</a></li>
                 <li><a href="/login" className="hover:underline">Login</a></li>
               </ul>

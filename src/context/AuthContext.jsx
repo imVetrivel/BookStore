@@ -1,30 +1,28 @@
 import React, { createContext, useState, useContext } from 'react';
 
-// Create a context object
 const AuthContext = createContext();
 
-// Create a provider component
 const AuthProvider = ({ children }) => {
   const [isLogin, setLogin] = useState(false);
   const [user, setUser] = useState(null);
+  const [cart,setcart] = useState(null);
 
-  // Define the context value you want to share
-  const value = {
+  const values = {
     isLogin,
     setLogin,
     user,
     setUser,
+    cart,
+    setcart,
   };
 
-  // Wrap children with the AuthContext provider and pass down the value
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value= {values}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook to use the AuthContext
 const useAuth = () => {
   return useContext(AuthContext);
 };
