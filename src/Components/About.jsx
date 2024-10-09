@@ -14,7 +14,7 @@ const About = () => {
             <div className="flex justify-center">
               <img
                 className="rounded-lg shadow-lg object-cover h-80 w-80 transition duration-500 hover:scale-105"
-                src="/public/assets/img/others/about.jpg"
+                src="/assets/img/others/about.jpg"
                 alt="Bookstore"
               />
             </div>
