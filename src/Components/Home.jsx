@@ -9,6 +9,42 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import LoginPopup from './LoginPopup.jsx';
 
+const Carousel = ({ images }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handlePrevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
+  };
+
+  const handleNextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+  };
+
+  return (
+    <div className="relative w-full h-96 mb-8"> {/* Increased height to h-96 */}
+      <div className="absolute inset-0">
+        <img
+          src={images[currentIndex]}
+          alt={`Slide ${currentIndex + 1}`}
+          className="w-full h-full object-cover rounded-lg"
+        />
+      </div>
+      <button
+        onClick={handlePrevSlide}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-lg hover:bg-gray-300"
+      >
+        <ChevronLeft size={24} /> 
+      </button>
+      <button
+        onClick={handleNextSlide}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-lg hover:bg-gray-300"
+      >
+        <ChevronRight size={24} />
+      </button>
+    </div>
+  );
+};
+
 
 const Popup = ({handlePop,popdata}) => {
 
@@ -272,19 +308,26 @@ const GenreSection = ({ genre, books, search,handlePop}) => {
 
 
 
-const Home = ({ search, category ,OnCategory}) => {
+const Home = ({ search, category, OnCategory }) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pop, setPop] = useState(false);
-  const [popdata, setPopdata] = useState("");
+  const [popdata, setPopdata] = useState('');
+
+  
+  const carouselImages = [
+    'https://cdn.pixabay.com/photo/2014/09/05/18/32/old-books-436498_1280.jpg',
+    'https://cdn.pixabay.com/photo/2015/10/09/08/38/book-978878_1280.jpg',
+    'https://cdn.pixabay.com/photo/2019/05/16/20/55/books-4208228_960_720.jpg',
+  ];
 
   // Fetch all books from the backend
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         const response = await axios.get('http://localhost:5000/books');
-        setBooks(response.data); 
+        setBooks(response.data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -302,11 +345,11 @@ const Home = ({ search, category ,OnCategory}) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading while fetching data
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>; // Show error if there's any issue
+    return <div>{error}</div>;
   }
 
   const matchedGenres = Object.entries(
@@ -328,6 +371,11 @@ const Home = ({ search, category ,OnCategory}) => {
   return (
     <div>
       <div className="container mx-auto px-4 py-8">
+        <h1 className='text-center font-5 text-4xl mb-3 shadow-lg bg-slate-800 text-white h-14 p-2 w-full top-0'>WelCome to Bookart</h1>
+        {/* Carousel */}
+        
+        <Carousel images={carouselImages} />
+
         {matchedGenres.length > 0 ? (
           matchedGenres.map(([genre, books]) => (
             <GenreSection
@@ -343,13 +391,11 @@ const Home = ({ search, category ,OnCategory}) => {
             <h2 className="text-2xl text-center">No books found.</h2>
           </div>
         )}
-        {/* Display the popup if pop is true */}
         {pop && <Popup handlePop={handlePop} popdata={popdata} />}
       </div>
-      <About OnCategory={OnCategory}/>
+      <About OnCategory={OnCategory} />
     </div>
   );
 };
-
 
 export default Home;

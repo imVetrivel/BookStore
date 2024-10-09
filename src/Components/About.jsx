@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import Navbar from './Navbar';
+import { useLocation } from 'react-router-dom';
 
 const About = ({OnCategory}) => {
   
+  const location = useLocation();
+  const hidebar = location.pathname === '/about';
   const handleChange = (event) => {
     const value = event.target.getAttribute('data-value');
     console.log(value); 
@@ -14,8 +18,9 @@ const About = ({OnCategory}) => {
   };
   return (
     <>
+      {hidebar&&<Navbar />}
       <div>
-        <h1 className='text-center text-4xl font-5 text- pt-5 font-extrabold'> About Bookart</h1>
+        <h1 className='text-center font-5 text-4xl mb-3 shadow-lg bg-slate-800 text-white h-14 p-2 w-full top-0'> About Bookart</h1>
       <div className="bg-gray-50 pb-32 pt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -28,13 +33,13 @@ const About = ({OnCategory}) => {
               />
             </div>
             <div className="flex flex-col justify-center">
-              <h3 className="text-2xl leading-6 font-medium text-gray-900 pb-3 font-1">Our mission</h3>
+              <h3 className="text-2xl leading-6 font-medium text-gray-900 pb-1 font-1">Our mission</h3>
               <p className='text-justify w-auto font-3'>
                 We have the best Collection of top rated books in different genres.
                 Our books are carefully selected to ensure that you get the best reading experience. <br />
                 We offer a reasonable price as well as better user experience. <br />
                 <i>Our Popular Genres:</i> </p> <br />
-                <ul className="space-y-1 list-disc pl-7 text-slate-500 pb-2 text-sm">
+                <ul className="space-y-1 list-disc pl-7 text-slate-800 pb-2 text-md">
                   <li>Contemporary Fiction</li>
                   <li value="Classic Literature">Classic Literature</li>
                   <li value="Mystery/Thriller">Mystery/Thriller</li>
@@ -62,8 +67,8 @@ const About = ({OnCategory}) => {
 
             {/* Footer Column 3 */}
             <div>
-              <h3 className="text-lg font-semibold">Popular Categories</h3>
-              <ul className="space-y-1 pl-7 text-slate-500 pb-2 text-sm list-none" onClick={handleChange}>
+              <h3 className="text-lg font-semibold ">Popular Categories</h3>
+              <ul className="space-y-2  text-white pb-2 text-md list-none mt-4" onClick={handleChange}>
                 <li data-value="Contemporary Fiction">Contemporary Fiction</li>
                 <li data-value="Classic Literature">Classic Literature</li>
                 <li data-value="Mystery/Thriller">Mystery/Thriller</li>
@@ -103,7 +108,7 @@ const About = ({OnCategory}) => {
 
           {/* Bottom Footer */}
           <div className="mt-8 border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} BookArt. All rights reserved.
+             {new Date().getFullYear()} BookArt. All rights reserved.
           </div>
         </div>
       </footer>
