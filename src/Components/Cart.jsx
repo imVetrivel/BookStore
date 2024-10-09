@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import axios from 'axios';
 import LoginPopup from './LoginPopup.jsx';
 import OrderPopup from './OrderPopup.jsx'; 
-import SuccessPopup from './SuccessPopup.jsx'; 
+import SuccessPopup from './Successpopup.jsx'; 
 import Navbar from './Navbar.jsx';
 
 const Cart = () => {
