@@ -12,7 +12,7 @@ const Cart = () => {
     const[cartid,setCartid]=useState([]);
 
     const handleRemove = (index) => {
-        axios.delete("http://localhost:5000/user/deletecart", {
+        axios.delete(`${import.meta.env.VITE_SERVER}/user/deletecart`, {
             data: { userId: user._id, index }
         })
         .then(res => {
