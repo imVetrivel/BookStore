@@ -6,6 +6,8 @@ import { X } from 'lucide-react';
 import Admin from './Admin';
 import About from './About'
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
+import LoginPopup from './LoginPopup.jsx';
 
 
 const Popup = ({handlePop,popdata}) => {
@@ -36,125 +38,118 @@ const Popup = ({handlePop,popdata}) => {
 
 
 // DetailedBookView component to display detailed information of the selected book
-const DetailedBookView = ({ book, onClose, handleCart ,isAdded,setIsAdded}) => {
-  // const [isAdded, setIsAdded] = useState(false);
-  // const handleAddToCart = () => {
-  //   handleCart(book);
-  //   setIsAdded(true);
-  // };
+const DetailedBookView = ({ book, onClose ,isAdded,setIsAdded}) => {
+  const { user, isLogin } = useAuth();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const handleAddToCart = async (bookId) => {
+      if (!isLogin) {
+          setIsPopupOpen(true);
+          return;
+      }
 
-
-  const handleAddToCart = async () => {
-    try {
-      const response = await axios.post('http://localhost:5000/books', {
-        title: book.title,
-        author: book.author,
-        description: book.description,
-        price: book.price,
-        imageUrl: book.imageUrl,
-        overview: book.overview,
-        language: book.language,
-        genre: book.genre,
-        publisher: book.publisher,
-      });
-      setIsAdded(true);
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-    }
+      try {
+          const response = await axios.put('http://localhost:5000/user/addcart', {
+              userId: user._id,
+              bookId
+          });
+          setIsAdded(true);
+          console.log('Book added to cart:', response.data.message);
+      } catch (error) {
+          console.error('Error adding to cart:', error);
+      }
   };
 
-
-
-
+  const handleClosePopup = () => {
+      setIsPopupOpen(false);
+  };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
-      <div className="bg-white shadow-lg ring-4 ring-slate-600-500 ring-opacity-40 rounded-lg p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-        >
-          <X size={24} />
-        </button>
-        <div className="flex flex-col md:flex-row gap-8">
-          <img
-            src={book.imageUrl}
-            alt={book.title}
-            className="w-full md:w-1/3 h-64 object-cover rounded-lg"
-          />
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold mb-2">{book.title}</h2>
-            <p className="text-gray-600 mb-4">
-              by <span className="text-blue-800">{book.author}</span>
-            </p>
-            <p className="text-gray-700 mb-4">{book.description}</p>
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold mb-2">Overview</h3>
-              <p className="text-gray-700">{book.overview}</p><a href="" className='text-blue-400 text-sm '>Read more</a>
-            </div>
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold mb-2">Details</h3>
-              <ul className="list-disc pl-5 text-gray-700">
-                <li><strong>Stock Availability:</strong> {book.stockAvailability}</li>
-                <li><strong>Language:</strong> {book.language}</li>
-                <li><strong>Genre:</strong> {book.genre}</li>
-                <li><strong>Format:</strong> {book.format}</li>
-                <li><strong>Publisher:</strong> {book.publisher}</li>
-              </ul>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold">₹{book.price}</span>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white shadow-lg ring-4 ring-slate-600-500 ring-opacity-40 rounded-lg p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
               <button
-                className={`font-bold py-2 px-4 rounded ${
-                  isAdded ? 'bg-green-500' : 'bg-blue-500 hover:bg-blue-600'
-                } text-white`}
-                onClick={handleAddToCart}
-                disabled={isAdded}
+                  onClick={onClose}
+                  className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
               >
-                {isAdded ? 'Added to Cart' : 'Add to Cart'}
+                  Close
               </button>
-            </div>
+              <div className="flex flex-col md:flex-row gap-8">
+                  <img
+                      src={book.imageUrl}
+                      alt={book.title}
+                      className="w-full md:w-1/3 h-64 object-cover rounded-lg"
+                  />
+                  <div className="flex-1">
+                      <h2 className="text-2xl font-bold mb-2">{book.title}</h2>
+                      <p className="text-gray-600 mb-4">
+                          by <span className="text-blue-800">{book.author}</span>
+                      </p>
+                      <p className="text-gray-700 mb-4">{book.description}</p>
+                      <div className="mb-4">
+                          <h3 className="text-lg font-semibold mb-2">Overview</h3>
+                          <p className="text-gray-700">{book.overview}</p>
+                          <a href="#" className="text-blue-400 text-sm">Read more</a>
+                      </div>
+                      <div className="mb-4">
+                          <h3 className="text-lg font-semibold mb-2">Details</h3>
+                          <ul className="list-disc pl-5 text-gray-700">
+                              <li><strong>Stock Availability:</strong> {book.stockAvailability}</li>
+                              <li><strong>Language:</strong> {book.language}</li>
+                              <li><strong>Genre:</strong> {book.genre}</li>
+                              <li><strong>Format:</strong> {book.format}</li>
+                              <li><strong>Publisher:</strong> {book.publisher}</li>
+                          </ul>
+                      </div>
+                      <div className="flex items-center justify-between">
+                          <span className="text-2xl font-bold">₹{book.price}</span>
+                          <button
+                              className={`font-bold py-2 px-4 rounded ${
+                                  isAdded ? 'bg-green-500' : 'bg-blue-500 hover:bg-blue-600'
+                              } text-white`}
+                              onClick={() => handleAddToCart(book.id)}
+                              disabled={isAdded}
+                          >
+                              {isAdded ? 'Added to Cart' : 'Add to Cart'}
+                          </button>
+                      </div>
+                  </div>
+              </div>
           </div>
-        </div>
+
+          {isPopupOpen && <LoginPopup onClose={handleClosePopup} />}
       </div>
-    </div>
   );
 };
 
 // ProductCard component to display book information in a card layout
-const ProductCard = ({ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher, handleCart ,handlePop}) => {
+const ProductCard = ({ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher ,id,handlePop}) => {
   const [isDetailedViewOpen, setIsDetailedViewOpen] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const { user, isLogin } = useAuth();
   
-  // const handleAddToCart = (e) => {
-  //   e.stopPropagation();
-  //   handleCart({ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher });
-  //   setIsAdded(true);
-  //   handlePop(title);
-  // };
 
-
-
-
-  const handleAddToCart = async (e) => {
+  const handleAddToCart = async (e,bookId) => {
     e.stopPropagation(); // Prevents opening the detailed view when adding to cart
-    try {
-      const response = await axios.post('http://localhost:5000/books', {
-        title,
-        author,
-        description,
-        price,
-        imageUrl,
-        overview,
-        language,
-        genre,
-        publisher,
-      });
-      setIsAdded(true);
-    } catch (error) {
-      console.error('Error adding to cart:', error);
+    if (!isLogin) {
+        setIsPopupOpen(true);
+        return;
     }
-  };
+
+    try {
+        const response = await axios.put('http://localhost:5000/user/addcart', {
+            userId: user._id,
+            bookId
+        });
+        setIsAdded(true);
+        console.log('Book added to cart:', response.data.message);
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+    }
+};
+
+const handleClosePopup = () => {
+    setIsPopupOpen(false);
+};
 
 
 
@@ -190,7 +185,7 @@ const ProductCard = ({ title, author, description, price, imageUrl, overview, st
             className={`font-bold py-1 px-2 p-1 text-sm rounded font-1 ${
               isAdded ? 'bg-green-500' : 'bg-blue-500 hover:bg-blue-600'
             } text-white`}
-            onClick={handleAddToCart}
+            onClick={(e)=>handleAddToCart(e,id)}
             disabled={isAdded}
           >
             {isAdded ? 'Added' : 'Add to Cart'}
@@ -200,19 +195,19 @@ const ProductCard = ({ title, author, description, price, imageUrl, overview, st
       </div>
       {isDetailedViewOpen && (
         <DetailedBookView
-          book={{ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher }}
+          book={{ title, author, description, price, imageUrl, overview, stockAvailability, language, genre, format, publisher,id }}
           onClose={closeDetailedView}
-          handleCart={handleCart}
           isAdded={isAdded}
           setIsAdded={setIsAdded}
         />
       )}
+       {isPopupOpen && <LoginPopup onClose={handleClosePopup} />}
     </>
   );
 };
 
 // GenreSection component to handle genre-based book display with filtering and pagination
-const GenreSection = ({ genre, books, search, handleCart,handlePop}) => {
+const GenreSection = ({ genre, books, search,handlePop}) => {
   const [startIndex, setStartIndex] = React.useState(0);
 
   const handlePrev = () => {
@@ -257,7 +252,8 @@ const GenreSection = ({ genre, books, search, handleCart,handlePop}) => {
               genre={book.genre}
               format={book.format}
               publisher={book.publisher}
-              handleCart={handleCart}
+              id = {book._id}
+              // handleCart={handleCart}
               handlePop={handlePop}
             />
           ))}
@@ -274,84 +270,9 @@ const GenreSection = ({ genre, books, search, handleCart,handlePop}) => {
   );
 };
 
-// Home component to display all books or filtered genres with search functionality
-// const Home = ({ search, handleCart,category }) => {
-//   const allBooks = [];
-//   const[pop,setPop]=useState(false);
-//   const[popdata,setPopdata]=useState("");
-//   const [collection, setCollection] = useState(bookCollection);
-
-//   // function handleAdmin(data){
-//   //   if (bookCollection[data.genre]) {
-//   //     bookCollection[data.genre].push(data);
-//   //   } else {
-//   //     bookCollection[data.genre] = [data];
-//   //   }
-//   //   console.log(data);
-//   // }
-  
-//   function handlePop(data){
-//     setPopdata(data);
-//     setPop(!pop);
-//   }
-//   console.log(category);
-
-//   Object.values(bookCollection).forEach((genreBooks) => {
-//     allBooks.push(...genreBooks);
-//   });
-
-//   let matchedGenres=[];
-  
-//   if(category){
-//     matchedGenres = Object.entries(bookCollection).filter(([genre, books]) =>
-//     books.some((book) =>
-//       genre.toLowerCase().includes(category.toLowerCase()) &&
-//       book.title.toLowerCase().includes(search.toLowerCase())
-//     ));
-//   }else{
-//     matchedGenres = Object.entries(bookCollection).filter(([genre, books]) =>
-//       books.some((book) =>
-//         book.title.toLowerCase().includes(search.toLowerCase())
-//       )
-//     );
-//   }
-  
-//   return (
-//     <div>
-      
-//       <div className="container mx-auto px-4 py-8">
-//         {matchedGenres.length > 0 ? (
-//           matchedGenres.map(([genre, books]) => (
-//             <GenreSection
-//               key={genre}
-//               genre={genre}
-//               books={books}
-//               search={search}
-//               handleCart={handleCart}
-//               handlePop={handlePop}
-//             />
-//           ))
-//         ) : (
-//           <div className='w-full h-full my-96'>
-//           <h2 className="text-2xl text-center">No books found.</h2>
-//           </div>
-//         )}
-//         {pop&&
-//           <Popup handlePop={handlePop} popdata={popdata}/>
-//         }
-//       </div>
-//       <About/>
-//       {/* <Popup /> */}
-//       {/* <Admin handleAdmin={handleAdmin}/> */}
-//     </div>
-//   );
-// };
 
 
-
-
-
-const Home = ({ search, handleCart, category }) => {
+const Home = ({ search, category }) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -363,7 +284,7 @@ const Home = ({ search, handleCart, category }) => {
     const fetchBooks = async () => {
       try {
         const response = await axios.get('http://localhost:5000/books');
-        setBooks(response.data); // Save the books fetched from the backend
+        setBooks(response.data); 
         setLoading(false);
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -373,7 +294,7 @@ const Home = ({ search, handleCart, category }) => {
     };
 
     fetchBooks();
-  }, []); // Empty dependency array means this runs once after the component mounts
+  }, []);
 
   const handlePop = (data) => {
     setPopdata(data);
@@ -414,8 +335,7 @@ const Home = ({ search, handleCart, category }) => {
               genre={genre}
               books={books}
               search={search}
-              handleCart={handleCart}
-              handlePop={handlePop} // Pass handlePop to handle popup click
+              handlePop={handlePop}
             />
           ))
         ) : (

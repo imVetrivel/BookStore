@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext.jsx';
 
-const Signin = ({handleLogin,handleAdmin}) => {
+const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+  const { setLogin, user,setUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,15 +21,15 @@ const Signin = ({handleLogin,handleAdmin}) => {
     try {
       const result = await axios.post('http://localhost:5000/user/signin', { email, password });
       setSuccess('Login successful!!!');
+      setLogin(true);
+      setUser(result.data?.user);
+      // console.log(user?.name);
 
       setTimeout(() => {
-        handleLogin();
-        navigate('/home');
+        // handleLogin();
+        navigate('/');
       }, 1500);
-      if(email==='sudhir@gmail.com'){
-        handleAdmin();
-      }
-      console.log(result);
+
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.message);
@@ -39,6 +41,12 @@ const Signin = ({handleLogin,handleAdmin}) => {
       setLoading(false);
     }
   };
+
+  // useEffect(() => {
+  //   if (user) {
+  //     console.log("User's name:", user.name);
+  //   }
+  // }, [user]);
 
   return (
     <>
@@ -68,7 +76,7 @@ const Signin = ({handleLogin,handleAdmin}) => {
         />
         <form onSubmit={handleSubmit} style={{ zIndex: 2 }}>
           <section className="flex w-[30rem] flex-col px-10 space-y-10 border-2 border-slate-400 bg-slate-800/60 rounded-lg shadow-lg p-10">
-            <div className="text-center text-4xl font-bold text-white font-5">Log In</div>
+            <div className="text-center text-4xl font-bold font-5 text-white">Log In</div>
 
             {error && <div className="text-red-500 text-center">{error}</div>}
             {success && <div className="text-green-500 text-center">{success}</div>}
@@ -77,6 +85,7 @@ const Signin = ({handleLogin,handleAdmin}) => {
               <input
                 type="email"
                 placeholder="Email"
+
                 className="w-full h-11 p-3 font-1 border-0 rounded-md bg-transparent outline-none placeholder:italic focus:outline-2 focus:outline-blue-400 text-black hover:outline-green-400"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
@@ -88,6 +97,7 @@ const Signin = ({handleLogin,handleAdmin}) => {
               <input
                 type="password"
                 placeholder="Password"
+
                 className="w-full h-11 rounded-lg p-3 border-0 bg-transparent outline-none placeholder:italic focus:outline-2 focus:outline-blue-500 text-black  hover:outline-green-400"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
@@ -120,7 +130,7 @@ const Signin = ({handleLogin,handleAdmin}) => {
             </p>
             <p className="text-center text-lg font-1 text-white" >
               <Link
-                to="/home"
+                to="/"
                 className="transform text-center font-semibold text-gray-100 duration-100 font-1 hover:text-gray-400"
               >
                 Continue without Login

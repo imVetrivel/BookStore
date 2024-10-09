@@ -1,70 +1,103 @@
 import { useEffect, useState } from 'react';
 import './assets/css/core.css';
 import Navbar from './Components/Navbar';
-import Layout from './Components/Layout';
 import Cart from './Components/Cart';
-import Home from './Components/Home'
-import { Routes,Route, useLocation } from 'react-router-dom';
-import { Signup } from './pages/Signup'
-import { Signin } from './pages/Signin'
+import Home from './Components/Home';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { Signup } from './pages/Signup';
+import { Signin } from './pages/Signin';
 import Admin from './Components/Admin';
-import About from './Components/About'
+import About from './Components/About';
+import { AuthProvider } from './context/AuthContext.jsx';
+import axios from 'axios';
 
 function App() {
+  const location = useLocation();
+  const hidebar = location.pathname === '/' || location.pathname === '/register';
 
-   const location=useLocation();
-   const hidebar=location.pathname ==='/'||location.pathname==='/register';
+  const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [isLoading, setIsLoading] = useState(true); // New loading state
 
-   const[search,setSearch]=useState("");
-   const[cart,setCart]=useState([]);
-   const[category,setCategory]=useState("");
-
-   function handleSearch(value){
-      setSearch(value);
-   }
-
-   const[islogin,setLogin]=useState(false);
-   function handleLogin(){
-      setLogin(!islogin);
-   }
-
-   const[isadmin,setAdmin]=useState(false);
-   function handleAdmin(){
-      setAdmin(!isadmin);
-   }
-   console.log("Login : "+islogin);
-   function handleCategory(value){
-      setCategory(value);
-   }
-
-   // console.log(category)
-   
-   const handleCart = (product) => {
-      setCart([...cart, product]);
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/books');
+        setBooks(response.data);
+        setFilteredBooks(response.data);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      } finally {
+        setIsLoading(false);
+      }
     };
+    fetchBooks();
+  }, []);
 
-      useEffect(() => {
-         console.log(cart);
-      }, [cart])
-      
-   return (
-      <>
-         {!hidebar && <Navbar onSearch={handleSearch} onCategory={handleCategory} islogin={islogin} isadmin={isadmin}/>}
-         <Routes>
-            {/* <Navbar onSearch={handleSearch} books={cart}/>
-            <Home cart={cart} handleCart={handleCart} search={search}/>
-            <Cart books={cart}/> */}
+  useEffect(() => {
+    filterBooks(searchTerm, selectedCategory);
+  }, [books, searchTerm, selectedCategory]);
 
-            <Route path='/' element={<Signin handleLogin={handleLogin} handleAdmin={handleAdmin}/>}/>
-            <Route path='/register' element={<Signup/>}/>
-            <Route path="/home" element={<Home cart={cart} handleCart={handleCart} search={search} category={category} />} />
-            <Route path="/cart" element={<Cart books={cart} islogin={islogin}/>} />
-            <Route path='/admin' element={<Admin />}/>
-            <Route path='/about' element={<About/>}/>
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
 
-         </Routes>
-      </>
-   );
+  const handleCategory = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const filterBooks = (term, category) => {
+    let filtered = books;
+
+    if (term) {
+      filtered = filtered.filter((book) =>
+        book.title.toLowerCase().includes(term.toLowerCase()) ||
+        book.author.toLowerCase().includes(term.toLowerCase())
+      );
+    }
+
+    if (category) {
+      filtered = filtered.filter((book) => book.genre === category);
+    }
+
+    setFilteredBooks(filtered);
+  };
+
+  return (
+    <AuthProvider>
+      <div>
+          <Navbar onSearch={handleSearch} onCategory={handleCategory} />
+
+        <div className="book-list">
+          {isLoading ? (
+            <p>Loading books...</p>
+          ) : filteredBooks.length > 0 ? (
+            filteredBooks.map((book) => (
+              <div key={book.id} className="book-card">
+                <h3>{book.title}</h3>
+                <p>by {book.author}</p>
+                <p>Genre: {book.genre}</p>
+                <p>Price: ₹{book.price}</p>
+              </div>
+            ))
+          ) : (
+            console.log("no books found")
+          )}
+        </div>
+
+        <Routes>
+          <Route path='/' element={<Home search={searchTerm} category={selectedCategory} />} />
+          <Route path='/register' element={<Signup />} />
+          <Route path="/login" element={<Signin />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path='/admin' element={<Admin />} />
+          <Route path='/about' element={<About />} />
+        </Routes>
+      </div>
+    </AuthProvider>
+  );
 }
 
 export default App;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Signup = () => {
@@ -9,7 +9,8 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
+  const navigate = useNavigate();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -19,7 +20,10 @@ const Signup = () => {
     try {
       const result = await axios.post('http://localhost:5000/user/register', { name, email, password });
       setSuccess('Registration successful!');
-      console.log(result);
+      
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.message);
@@ -109,7 +113,7 @@ const Signup = () => {
             <p className="text-center text-lg font-1 text-white">
               Already Have an Account?{' '}
               <Link
-                to="/"
+                to="/login"
                 className="font-medium text-indigo-400 underline-offset-4 hover:text-blue-400 hover:underline"
               >
                 Sign in
