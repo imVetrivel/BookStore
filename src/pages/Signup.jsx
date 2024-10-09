@@ -18,7 +18,7 @@ const Signup = () => {
     setSuccess('');
 
     try {
-      const result = await axios.post('http://localhost:5000/user/register', { name, email, password });
+      const result = await axios.post(`${import.meta.env.VITE_SERVER}/user/register`, { name, email, password });
       setSuccess('Registration successful!');
       
       setTimeout(() => {

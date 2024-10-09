@@ -35,7 +35,7 @@ const Cart = () => {
         const fetchCartItems = async () => {
             if (user && user._id) {
                 try {
-                    const response = await axios.get(`http://localhost:5000/user/getcart/${user._id}`);
+                    const response = await axios.get(`${import.meta.env.VITE_SERVER}/user/getcart/${user._id}`);
                     setCartItems(response.data?.cart.cart_items || []); // Set local cart items
                     // console.log(response);
                 } catch (err) {

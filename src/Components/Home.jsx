@@ -48,7 +48,7 @@ const DetailedBookView = ({ book, onClose ,isAdded,setIsAdded}) => {
       }
 
       try {
-          const response = await axios.put('http://localhost:5000/user/addcart', {
+          const response = await axios.put(`${import.meta.env.VITE_SERVER}/user/addcart`, {
               userId: user._id,
               bookId
           });
@@ -136,7 +136,7 @@ const ProductCard = ({ title, author, description, price, imageUrl, overview, st
     }
 
     try {
-        const response = await axios.put('http://localhost:5000/user/addcart', {
+        const response = await axios.put(`${import.meta.env.VITE_SERVER}/user/addcart`, {
             userId: user._id,
             bookId
         });
@@ -283,7 +283,7 @@ const Home = ({ search, category }) => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/books');
+        const response = await axios.get(`${import.meta.env.VITE_SERVER}/books`);
         setBooks(response.data); 
         setLoading(false);
       } catch (error) {

@@ -24,7 +24,7 @@ function App() {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/books');
+        const response = await axios.get(`${import.meta.env.VITE_SERVER}/api/books`);
         setBooks(response.data);
         setFilteredBooks(response.data);
       } catch (error) {
