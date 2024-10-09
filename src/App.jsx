@@ -19,14 +19,21 @@ function App() {
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [isLoading, setIsLoading] = useState(true); // New loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         const response = await axios.get('https://bookstore-server-1.onrender.com/books');
-        setBooks(response.data);
-        setFilteredBooks(response.data);
+        
+        const uniqueBooks = Array.from(new Set(response.data.map(book => book.id)))
+          .map(id => response.data.find(book => book.id === id));
+
+        console.log("Unique Books: ", uniqueBooks); // Log unique books
+
+        setBooks(uniqueBooks);
+        setFilteredBooks(uniqueBooks); 
+        
       } catch (error) {
         console.error('Error fetching books:', error);
       } finally {
@@ -38,7 +45,7 @@ function App() {
 
   useEffect(() => {
     filterBooks(searchTerm, selectedCategory);
-  }, [books, searchTerm, selectedCategory]);
+  }, [searchTerm, selectedCategory, books]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
@@ -68,36 +75,36 @@ function App() {
   return (
     <AuthProvider>
       <div>
-          {hidebar&&<Navbar onSearch={handleSearch} onCategory={handleCategory} />}
-
+        {hidebar && <Navbar onSearch={handleSearch} onCategory={handleCategory} />}
+{/*         
         <div className="book-list">
           {isLoading ? (
             <p>Loading books...</p>
           ) : filteredBooks.length > 0 ? (
-            filteredBooks.map((book) => (
-              <div key={book.id} className="book-card">
-                <h3>{book.title}</h3>
-                <p>by {book.author}</p>
-                <p>Genre: {book.genre}</p>
-                <p>Price: ₹{book.price}</p>
-              </div>
+            filteredBooks.map((book, index) => (
+                <div key={`${book.id}-${index}`} className="book-card">
+                    <h3>{book.title}</h3>
+                    <p>by {book.author}</p>
+                    <p>Genre: {book.genre}</p>
+                    <p>Price: ₹{book.price}</p>
+                </div>
             ))
-          ) : (
-            console.log("no books found")
-          )}
-        </div>
+        ) : (
+            <p>No books found.</p>  
+        )}
+        </div> */}
 
         <Routes>
-          <Route path='/' element={<Home search={searchTerm} category={selectedCategory} OnCategory={handleCategory}/>} />
+          <Route path='/' element={<Home search={searchTerm} category={selectedCategory} OnCategory={handleCategory} />} />
           <Route path='/register' element={<Signup />} />
           <Route path="/login" element={<Signin />} />
           <Route path="/cart" element={<Cart />} />
           <Route path='/admin' element={<Admin />} />
-          <Route path='/about' element={<About OnCategory={handleCategory}/>} />
+          <Route path='/about' element={<About OnCategory={handleCategory} />} />
         </Routes>
       </div>
     </AuthProvider>
-  );
-}
+  )
+};
 
 export default App;
